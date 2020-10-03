@@ -234,66 +234,316 @@ _{Explain here how the data archiving feature will be implemented}_
 
 ### Product scope
 
-**Target user profile**:
+**Target user profile**
 
-* has a need to manage a significant number of contacts
+Anybody → Students → University Students → NUS Students → NUS Students handling multiple projects
+
+* needs to keep track of contacts for various people (Professors, TA, Groupmates)
+* needs to schedule school-related appointments
+* needs to keep track of school-related appointments
 * prefer desktop apps over other types
 * can type fast
 * prefers typing to mouse interactions
 * is reasonably comfortable using CLI apps
 
-**Value proposition**: manage contacts faster than a typical mouse/GUI driven app
+**Value proposition**: 
 
+* seamless contact management which is faster than a typical mouse/GUI driven app
+* convenient scheduling of project meetings and consultations, making planning a work week effortless
+* effective visualisation of schedules and meetings with the application's timeline dashboard
 
 ### User stories
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                     | So that I can…​                                                        |
-| -------- | ------------------------------------------ | ------------------------------ | ---------------------------------------------------------------------- |
-| `* * *`  | new user                                   | see usage instructions         | refer to instructions when I forget how to use the App                 |
-| `* * *`  | user                                       | add a new person               |                                                                        |
-| `* * *`  | user                                       | delete a person                | remove entries that I no longer need                                   |
-| `* * *`  | user                                       | find a person by name          | locate details of persons without having to go through the entire list |
-| `* *`    | user                                       | hide private contact details   | minimize chance of someone else seeing them by accident                |
-| `*`      | user with many persons in the address book | sort persons by name           | locate a person easily                                                 |
+| Priority | As a …​                                    | I want to …​                                                                                                       | So that I can…​                                                                                                 |
+| -------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| `* * *`  | New user                                   | See usage instructions                                                                                                   | Have easy reference when I forget how to use the App                                                               |
+| `* * *`  | NUS Student                                | Add contacts of people around me                                                                                         | Find them quickly and ensure that I don’t lose anyone's contact information                                        |
+| `* * *`  | NUS Student                                | Delete a contact                                                                                                         | Remove old or unwanted contacts                                                                                    |
+| `* * *`  | NUS Student                                | Edit an existing contact                                                                                                 | Change their contact details if it has changed                                                                     |
+| `* * *`  | NUS Student                                | View my entire list of contacts                                                                                          | Select who I want to contact                                                                                       |
+| `* * *`  | NUS Student                                | Clear all contacts                                                                                                       | Reset my contacts                                                                                                  |
+| `* * *`  | NUS Student                                | Label my contacts based on the individual's relationship with me (e.g. TA, Professor, Classmate)                         | Easily identify the contacts relevant to my query                                                                  |
+| `* * *`  | NUS Student                                | Create meetings for events such as projects or assignments                                                               | I can keep track of commitments and upcoming work                                                                  |
+| `* * *`  | NUS Student                                | Add relevant contacts to a meeting                                                                                       | Keep track of who is participating in the meeting and their contact information                                    |
+| `* * *`  | Forgetful NUS Student                      | Assign a meeting a timeslot and date                                                                                     | Track exactly when I am supposed to meet                                                                           |
+| `* * *`  | NUS Student with many meetings             | View all scheduled meetings                                                                                              | Have an overview of all my meetings                                                                                |
+| `* * *`  | NUS Student                                | Create consultations with professors                                                                                     | Track when I have set up meetings with professors and TA’s                                                         |
+| `* * *`  | NUS Student                                | Add contacts to a consultation                                                                                           | Keep track of which professor I am consulting and access his/her contact details easily                            |
+| `* * *`  | NUS Student                                | Assign a consultation a timeslot and date                                                                                | Keep track of when my upcoming consultations are                                                                   |
+| `* * *`  | NUS Student taking many modules            | Create modules                                                                                                           | Add new modules whenever needed                                                                                    |
+| `* * *`  | NUS Student taking many modules            | View relevant groups of contacts by modules                                                                              | I can easily keep track of contact details of individuals in different modules                                     |
+| `* * `   | NUS Student                                | Hide private contact details                                                                                             | Minimize chances of someone else seeing them by accident                                                           |
+| `*    `  | Student who likes to personalise stuff     | Customise the layout of the App                                                                                          | I can organise relevant information in personalised way that I find easy to access                                 |
 
 *{More to be added}*
 
 ### Use cases
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+(For all use cases below, the **System** is the `Modduke` and the **Actor** is the `user`, unless specified otherwise)
 
-**Use case: Delete a person**
+**UC01: Add a Contact**
 
 **MSS**
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1.  User requests to add a contact to the list
+2.  Modduke adds the contact
+
+ Use case ends.
+
+**Extensions**
+
+* 1a. Name, phone number or email field is missing.
+
+  * 1a1. Modduke shows an error message.
 
     Use case ends.
+
+* 1b. Contact with the same name already exists.
+
+  * 1b1. Modduke shows an error message.
+
+    Use case ends.
+
+
+**UC02: Delete a Contact**
+
+**MSS**
+
+1.  User requests to list contacts
+2.  Modduke shows a list of contacts
+3.  User requests to delete a specific contact in the list
+4.  Modduke deletes the contact
+
+ Use case ends.
 
 **Extensions**
 
 * 2a. The list is empty.
 
-  Use case ends.
+    Use case ends.
 
-* 3a. The given index is invalid.
+* 3a. The given name is invalid.
 
-    * 3a1. AddressBook shows an error message.
+  * 3a1. Modduke shows an error message.
 
-      Use case resumes at step 2.
+    Use case resumes at step 2.
+
+
+**UC03: Edit a Contact**
+
+**MSS**
+
+1.  User requests to list contacts
+2.  Modduke shows a list of contacts
+3.  User requests to edit a specific contact in the list
+4.  Modduke edits the contact
+
+ Use case ends.
+
+**Extensions**
+
+* 2a. The list is empty.
+
+    Use case ends.
+
+* 3a. No optional field is provided.
+
+  * 3a1. Modduke shows an error message.
+
+    Use case resumes at step 2.
+
+* 3b. The given name is invalid.
+
+  * 3b1. Modduke shows an error message.
+
+    Use case resumes at step 2.
+
+
+**UC04: View Contacts**
+
+**MSS**
+
+1.  User requests to list contacts
+2.  Modduke shows a list of contacts
+
+ Use case ends.
+
+**Extensions**
+
+* 2a. The list is empty.
+
+    Use case ends.
+
+**UC05: Label a Contact**
+
+**MSS**
+
+1.  User requests to list contacts
+2.  Modduke shows a list of contacts
+3.  User requests to label a specific contact in the list
+4.  Modduke labels the contact
+
+ Use case ends.
+
+**Extensions**
+
+* 2a. The list is empty.
+
+    Use case ends.
+
+* 3a. The given name is invalid.
+
+  * 3a1. Modduke shows an error message.
+
+    Use case resumes at step 2.
+
+* 3b. No tags are provided.
+
+  * 3b1. Modduke shows an error message.
+
+    Use case resumes at step 2.
+
+
+**UC06: Clear all Contacts**
+
+**MSS**
+
+1.  User requests to clear all existing contacts.
+2.  Modduke deletes all existing contacts.
+
+ Use case ends.
+
+**UC07: Clear Contacts**
+
+**MSS**
+
+1.  User makes request to clear all contacts
+2.  Modduke clears all contacts
+
+    Use case ends.
+
+**UC08: Create Meeting**
+
+**MSS**
+
+1.  User makes request to create a meeting
+2.  Modduke accepts request and creates meeting
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. Meeting Name is missing.
+
+  * 1a1. Modduke shows an error message.
+
+    Use case ends
+
+* 1b. Meeting with the same name already exists.
+
+  * 1b1. Modduke shows an error message.
+
+    Use case ends.
+
+**UC09: Set Time/Date for Meeting**
+
+**MSS**
+
+1.  User makes request to edit a specific meeting
+2.  Modduke accepts request and makes changes to meeting
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. Meeting Name is missing.
+
+  * 1a1. Modduke shows an error message.
+
+    Use case ends.
+
+* 1b. Meeting with the same name already exists.
+
+  * 1b1. Modduke shows an error message.
+
+    Use case ends.
+
+**UC10: View all Meeting**
+
+**MSS**
+
+1.  User makes request to show all meetings
+2.  Modduke accepts request and displays all meetings
+
+    Use case ends.
+
+**UC11: Create Consult**
+
+**MSS**
+
+1.  User makes request to create a consult
+2.  Modduke accepts request and creates consult
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. Consult Name is missing.
+
+  * 1a1. Modduke shows an error message.
+
+    Use case ends
+
+* 1b. Consult with the same name already exists.
+
+  * 1b1. Modduke shows an error message.
+
+    Use case ends.
+
+**UC12: Set Time/Date for Consult**
+
+**MSS**
+
+1.  User makes request to edit a specific consult
+2.  Modduke accepts request and makes changes to consult
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. Consult Name is missing.
+
+  * 1a1. Modduke shows an error message.
+
+    Use case ends.
+
+* 1b. Consult with the same name already exists.
+
+  * 1b1. Modduke shows an error message.
+
+    Use case ends.
+
+
 
 *{More to be added}*
 
 ### Non-Functional Requirements
 
-1.  Should work on any _mainstream OS_ as long as it has Java `11` or above installed.
-2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
-3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+1. The product should only be for a single user rather than multi-user.
+2. A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+3. Increments to the code should be made every week with a consistent delivery rate. 
+4. The data should be stored locally and should be in a human editable text file, instead of using a DBMS.
+5. The software should follow the Object-oriented paradigm primarily.
+6. Should work on any _mainstream OS_ as long as it has Java `11` or above installed.
+7. Should work without requiring an installer.
+8. Should be able to function without having to rely on being heavily connected to a network.
+9. The use of third-party frameworks and libraries should be avoided.
+10. JAR files should not exceed 100Mb and PDF files should not exceed 15Mb/file.
+11. All features should be easy to test. (i.e., do not depend heavily on remote APIs, do not have audio-related features and do not require creating user accounts before usage)
+12. The system should repond within two seconds.
+13. Should be able to hold up to 1000 contacts without a noticeable sluggishness in performance for typical usage.
 
 *{More to be added}*
 
@@ -301,6 +551,12 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * **Mainstream OS**: Windows, Linux, Unix, OS-X
 * **Private contact detail**: A contact detail that is not meant to be shared with others
+* **.vcf,.csv files**: A format of files that contains contact information from users phones
+* **CLI**: CLI is the Command Line Interface where you can type in commands and get an output
+* **TA**: Teaching assistant
+* **Consultation**: A meeting between students and a professor or TA
+* **Meeting**: A general purpose appointment between students
+
 
 --------------------------------------------------------------------------------------------------------------------
 

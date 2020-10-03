@@ -1,5 +1,10 @@
-title: "AB-3"
-theme: minima
+title: "Modduke"
+plugins:
+  - jemoji
+  - jekyll-remote-theme
+remote_theme: jekyll/minima
+minima:
+  skin: solarized
 
 header_pages:
   - UserGuide.md
@@ -8,8 +13,7 @@ header_pages:
 
 markdown: kramdown
 
-repository: "se-edu/addressbook-level3"
+repository: "ay2021s1-cs2103-f10-2/tp"
 github_icon: "images/github-icon.png"
 
-plugins:
-  - jemoji
+
