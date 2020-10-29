@@ -5,5 +5,4 @@ package seedu.address.ui;
  */
 public interface Observer {
     void update();
-    void updateTimeline();
 }

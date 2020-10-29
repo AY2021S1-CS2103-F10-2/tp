@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
-import seedu.address.model.person.PersonHasTagsAndNamePredicate;
+import seedu.address.model.person.PersonHasTagsAndKeywordInNamePredicate;
 import seedu.address.model.person.PersonHasTagsPredicate;
 import seedu.address.model.tag.Tag;
 
@@ -42,7 +42,7 @@ public class FindCommandParser implements Parser<FindCommand> {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
             }
             return new FindCommand(
-                    new PersonHasTagsAndNamePredicate(new ArrayList<>(nameSet), new ArrayList<>(tagSet)));
+                    new PersonHasTagsAndKeywordInNamePredicate(new ArrayList<>(nameSet), new ArrayList<>(tagSet)));
         } else if (arePrefixesPresent(argMultimap, PREFIX_NAME)) {
             Set<String> nameSet = ParserUtil.parseAllNames(argMultimap.getAllValues(PREFIX_NAME));
             if (nameSet.size() == 1 && nameSet.contains("")) {

@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.module.ModuleName;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.FullNameMatchesKeywordPredicate;
 import seedu.address.model.person.PersonHasTagsAndNamePredicate;
 import seedu.address.model.person.PersonHasTagsPredicate;
 import seedu.address.model.tag.Tag;
@@ -71,7 +71,7 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
             }
             Set<ModuleName> moduleNameSet = ParserUtil.parseAllModules(moduleNames);
             return new DeleteCommand(
-                    new NameContainsKeywordsPredicate(new ArrayList<>(nameSet)),
+                    new FullNameMatchesKeywordPredicate(new ArrayList<>(nameSet)),
                     new ArrayList<>(moduleNameSet));
         } else if (arePrefixesPresent(argMultimap, PREFIX_MODULE, PREFIX_TAG)) {
             Set<Tag> tagSet = parseTagsForFind(argMultimap.getAllValues(PREFIX_TAG)).orElse(new HashSet<>());
@@ -91,7 +91,7 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
             }
             return new DeleteCommand(
-                    new NameContainsKeywordsPredicate(new ArrayList<>(nameSet)),
+                    new FullNameMatchesKeywordPredicate(new ArrayList<>(nameSet)),
                     new ArrayList<ModuleName>());
         } else if (arePrefixesPresent(argMultimap, PREFIX_TAG)) {
             Set<Tag> tagSet = parseTagsForFind(argMultimap.getAllValues(PREFIX_TAG))

@@ -39,6 +39,9 @@ public class ViewMeetingCommand extends Command {
      * @param targetMeetingName Name of the meeting.
      */
     public ViewMeetingCommand(ModuleName targetModuleName, MeetingName targetMeetingName) {
+        requireNonNull(targetModuleName);
+        requireNonNull(targetMeetingName);
+
         this.targetModuleName = targetModuleName;
         this.targetMeetingName = targetMeetingName;
     }
@@ -71,7 +74,7 @@ public class ViewMeetingCommand extends Command {
 
         model.setSelectedMeeting(meetingToView);
         return new CommandResult(String.format(MESSAGE_VIEW_MEETING_SUCCESS, meetingToView), false, false,
-                true, false);
+                true);
     }
 
     @Override

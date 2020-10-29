@@ -1,0 +1,56 @@
+@startuml
+start
+:User inputs contact delete command;
+:DeleteCommandParser checks input;
+if() then ([input has name, module and tag prefix])
+:Create predicate that checks if
+Person has any of the given names or
+tags;
+:Create DeleteCommand with created
+predicate and list of given module
+names;
+elseif() then ([input has name, module prefix])
+:Create predicate that checks if
+Person has any of the given names;
+:Create DeleteCommand with created
+predicate and list of given module
+names;
+elseif() then ([input has name, tag prefix])
+:Create predicate that checks if
+Person has any of the given names or
+tags;
+:Create DeleteCommand with created
+predicate and empty list;
+elseif() then ([input has module, tag prefix])
+:Create predicate that checks if
+Person has any of the given tags;
+:Create DeleteCommand with created
+predicate and list of given module
+names;
+elseif() then ([input only has name prefix])
+:Create predicate that checks if
+Person has any of the given names;
+:Create DeleteCommand with created
+predicate and empty list;
+elseif() then ([input only has module prefix])
+:Create DeleteCommand with empty
+predicate and list of given module
+names;
+elseif() then ([input only has tag prefix])
+:Create predicate that checks if
+Person has any of the given tags;
+:Create DeleteCommand with created
+predicate and empty list;
+else ([else])
+:Throw ParseException;
+end
+endif
+:Execute the created DeleteCommand;
+:Obtain list of Persons from Modduke
+who pass the predicate or are in any of
+the given modules;
+:Delete all Persons in the list from the
+AddressBook, MeetingBook and
+ModuleBook;
+stop
+@enduml

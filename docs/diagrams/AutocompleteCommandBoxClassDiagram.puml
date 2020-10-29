@@ -1,0 +1,40 @@
+@startuml
+!include style.puml
+skinparam arrowThickness 1.1
+skinparam arrowColor UI_COLOR_T4
+skinparam classBackgroundColor UI_COLOR
+skinparam classAttributeIconSize 0
+skinparam classAttributeFontColor WHITE
+
+show members
+hide empty members
+
+package UI <<Rectangle>>{
+Interface Ui <<Interface>>
+Class UiManager
+Class MainWindow
+Class CommandBox
+Class AutocompleteCommandBox {
+-boolean isAutocompleteMode
+-boolean hasSetPrefix
++void setupAutocompletionListeners(commandPrefix, suggestionSupplier)
+}
+Class Suggestions {
+-String prefix
+-List<String> list
+
++void setPrefix(prefix)
++void setList(list)
++String nextSuggestion(prefix)
++String prevSuggestion(prefix)
+}
+}
+
+
+UiManager -up-> Ui
+UiManager --> MainWindow
+MainWindow *-> AutocompleteCommandBox
+AutocompleteCommandBox -up-|> CommandBox
+AutocompleteCommandBox -> "*"Suggestions
+
+@enduml

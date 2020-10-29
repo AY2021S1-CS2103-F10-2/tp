@@ -251,7 +251,7 @@ public class ModelManager implements Model {
                     Meeting updatedMeeting = new Meeting(meeting.getModule(), meeting.getMeetingName(),
                             meeting.getDate(), meeting.getTime(), updatedMembers, meeting.getAgendas(),
                             meeting.getNotes());
-                    meetingBook.setMeeting(meeting, updatedMeeting);
+                    setMeeting(meeting, updatedMeeting);
                 });
     }
 
@@ -323,12 +323,12 @@ public class ModelManager implements Model {
                 }
             }
             if (updatedMembers.size() == 0) {
-                meetingBook.removeMeeting(filteredMeeting);
+                deleteMeeting(filteredMeeting);
             } else {
                 Meeting updatedMeeting = new Meeting(modules[1], filteredMeeting.getMeetingName(),
                         filteredMeeting.getDate(), filteredMeeting.getTime(), updatedMembers,
                         filteredMeeting.getAgendas(), filteredMeeting.getNotes());
-                meetingBook.setMeeting(filteredMeeting, updatedMeeting);
+                setMeeting(filteredMeeting, updatedMeeting);
             }
         }
     }

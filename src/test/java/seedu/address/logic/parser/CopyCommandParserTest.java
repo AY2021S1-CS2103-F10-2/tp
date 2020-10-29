@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.CopyCommand;
 import seedu.address.model.module.ModuleName;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.FullNameMatchesKeywordPredicate;
 import seedu.address.model.person.PersonHasTagsAndNamePredicate;
 import seedu.address.model.person.PersonHasTagsPredicate;
 import seedu.address.model.tag.Tag;
@@ -52,7 +52,7 @@ public class CopyCommandParserTest {
 
         // only name prefix, email
         CopyCommand expectedCopyCommand =
-                new CopyCommand(new NameContainsKeywordsPredicate(nameList), true,
+                new CopyCommand(new FullNameMatchesKeywordPredicate(nameList), true,
                         new ArrayList<ModuleName>());
         assertParseSuccess(parser, "email n/Alice", expectedCopyCommand);
 
@@ -79,7 +79,7 @@ public class CopyCommandParserTest {
 
         // name and module prefix, email
         expectedCopyCommand =
-                new CopyCommand(new NameContainsKeywordsPredicate(nameList), true,
+                new CopyCommand(new FullNameMatchesKeywordPredicate(nameList), true,
                         moduleNames);
 
         assertParseSuccess(parser, "email n/Alice m/CS2103", expectedCopyCommand);

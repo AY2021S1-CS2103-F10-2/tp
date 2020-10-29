@@ -1,0 +1,114 @@
+@startuml
+!include style.puml
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":DeleteLabelCommandParser" as DeleteLabelCommandParser LOGIC_COLOR
+participant ":ArgumentTokenizer" as ArgumentTokenizer LOGIC_COLOR
+participant "argMultimap:ArgumentMultimap" as ArgumentMultimap LOGIC_COLOR
+participant ":ParserUtil" as ParserUtil LOGIC_COLOR
+participant "c:DeleteLabelCommand" as DeleteLabelCommand LOGIC_COLOR
+participant "editedPerson:Person" as Person LOGIC_COLOR
+participant ":CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant ":Model" as Model MODEL_COLOR
+end box
+
+[-> LogicManager : execute("label delete Alex Yeoh t/friends")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("label delete Alex Yeoh t/friends")
+activate AddressBookParser
+
+create DeleteLabelCommandParser
+AddressBookParser -> DeleteLabelCommandParser : DeleteLabelCommandParser()
+activate DeleteLabelCommandParser
+
+DeleteLabelCommandParser --> AddressBookParser
+deactivate DeleteLabelCommandParser
+
+AddressBookParser -> DeleteLabelCommandParser : parse("Alex Yeoh t/friends")
+activate DeleteLabelCommandParser
+
+DeleteLabelCommandParser -> ArgumentTokenizer : tokenize(args, PREFIX_TAG)
+activate ArgumentTokenizer
+
+create ArgumentMultimap
+ArgumentTokenizer -> ArgumentMultimap : ArgumentMultimap()
+activate ArgumentMultimap
+
+ArgumentMultimap --> ArgumentTokenizer : argMultimap
+deactivate ArgumentMultimap
+
+ArgumentTokenizer --> DeleteLabelCommandParser : argMultimap
+deactivate ArgumentTokenizer
+
+DeleteLabelCommandParser -> ParserUtil : parseName("Alex Yeoh")
+activate ParserUtil
+
+ParserUtil --> DeleteLabelCommandParser : name
+deactivate ParserUtil
+
+DeleteLabelCommandParser -> ArgumentMultimap : getAllValues(PREFIX_TAG)
+activate ArgumentMultimap
+
+ArgumentMultimap --> DeleteLabelCommandParser : tagList
+deactivate ArgumentMultimap
+
+create DeleteLabelCommand
+DeleteLabelCommandParser -> DeleteLabelCommand : DeleteLabelCommand(name, tagsToDelete);
+activate DeleteLabelCommand
+
+DeleteLabelCommand --> DeleteLabelCommandParser : c
+deactivate DeleteLabelCommand
+
+DeleteLabelCommandParser --> AddressBookParser : c
+destroy DeleteLabelCommandParser
+
+AddressBookParser --> LogicManager : c
+deactivate AddressBookParser
+
+LogicManager -> DeleteLabelCommand : execute()
+activate DeleteLabelCommand
+
+create Person
+DeleteLabelCommand -> Person
+activate Person
+
+Person --> DeleteLabelCommand : editedPerson
+deactivate Person
+
+DeleteLabelCommand -> Model : setPerson(p, editedPerson)
+activate Model
+
+Model --> DeleteLabelCommand
+deactivate Model
+
+DeleteLabelCommand -> Model : updatePersonInMeetingBook(p, editedPerson)
+activate Model
+
+Model --> DeleteLabelCommand
+deactivate Model
+
+DeleteLabelCommand -> Model : updatePersonInModuleBook(p, editedPerson)
+activate Model
+
+Model --> DeleteLabelCommand
+deactivate Model
+
+create CommandResult
+DeleteLabelCommand -> CommandResult
+activate CommandResult
+
+CommandResult --> DeleteLabelCommand
+deactivate CommandResult
+
+DeleteLabelCommand --> LogicManager : result
+destroy DeleteLabelCommand
+
+[<--LogicManager
+deactivate LogicManager
+@enduml

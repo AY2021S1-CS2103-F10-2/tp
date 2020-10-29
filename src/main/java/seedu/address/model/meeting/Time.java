@@ -29,10 +29,6 @@ public class Time {
         this.time = LocalTime.parse(time, INPUT_FORMAT);
     }
 
-    public LocalTime getLocalTimeFormat() {
-        return this.time;
-    }
-
     /**
      * Returns true if a given string is a valid phone number.
      */

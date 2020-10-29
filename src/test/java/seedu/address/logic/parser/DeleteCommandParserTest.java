@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.model.module.ModuleName;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.FullNameMatchesKeywordPredicate;
 import seedu.address.model.person.PersonHasTagsAndNamePredicate;
 import seedu.address.model.person.PersonHasTagsPredicate;
 import seedu.address.model.tag.Tag;
@@ -37,7 +37,7 @@ public class DeleteCommandParserTest {
 
         // only name prefix, email
         DeleteCommand expectedDeleteCommand =
-                new DeleteCommand(new NameContainsKeywordsPredicate(nameList),
+                new DeleteCommand(new FullNameMatchesKeywordPredicate(nameList),
                         new ArrayList<ModuleName>());
         assertParseSuccess(parser, "email n/Alice", expectedDeleteCommand);
 
@@ -64,7 +64,7 @@ public class DeleteCommandParserTest {
 
         // name and module prefix, email
         expectedDeleteCommand =
-                new DeleteCommand(new NameContainsKeywordsPredicate(nameList),
+                new DeleteCommand(new FullNameMatchesKeywordPredicate(nameList),
                         moduleNames);
 
         assertParseSuccess(parser, "email n/Alice m/CS2103", expectedDeleteCommand);

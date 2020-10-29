@@ -1,0 +1,74 @@
+@startuml
+start
+:User inputs copy command;
+:CopyCommandParser checks input;
+if() then ([input is "copy email"])
+:Set isEmail to **true**;
+elseif() then ([input is "copy phone"])
+:Set isEmail to **false**;
+else ([else])
+:Throw ParseException;
+end
+endif
+if() then ([input has name, module and tag prefix])
+:Create predicate that checks if
+Person has any of the given names or
+tags;
+:Create CopyCommand with created
+predicate, isEmail and list of given
+module names;
+elseif() then ([input has name, module prefix])
+:Create predicate that checks if
+Person has any of the given names;
+:Create CopyCommand with created
+predicate, isEmail and list of given
+module names;
+elseif() then ([input has name, tag prefix])
+:Create predicate that checks if
+Person has any of the given names or
+tags;
+:Create CopyCommand with created
+predicate, isEmail and empty list;
+elseif() then ([input has module, tag prefix])
+:Create predicate that checks if
+Person has any of the given tags;
+:Create CopyCommand with created
+predicate, isEmail and list of given
+module names;
+elseif() then ([input only has name prefix])
+:Create predicate that checks if
+Person has any of the given names;
+:Create CopyCommand with created
+predicate, isEmail and empty list;
+elseif() then ([input only has module prefix])
+:Create CopyCommand with empty
+predicate, isEmail and list of given module
+names;
+elseif() then ([input only has tag prefix])
+:Create predicate that checks if
+Person has any of the given tags;
+:Create CopyCommand with created
+predicate, isEmail and empty list;
+else ([else])
+:Throw ParseException;
+end
+endif
+:Execute the created CopyCommand;
+:Obtain list of Persons from Modduke
+who pass the predicate or are in any of
+the given modules;
+if() then ([isEmail])
+:Obtain email address from Persons
+in list;
+:Combine all email addresses into a
+String;
+else ([else])
+:Obtain phone numbers from Persons
+in list;
+:Combine all phone numbers into a
+String;
+endif
+:Copy the resultant String into the
+user's system clipboard;
+stop
+@enduml

@@ -1,0 +1,130 @@
+@startuml
+!include style.puml
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":AddLabelCommandParser" as AddLabelCommandParser LOGIC_COLOR
+participant ":ArgumentTokenizer" as ArgumentTokenizer LOGIC_COLOR
+participant "argMultimap:ArgumentMultimap" as ArgumentMultimap LOGIC_COLOR
+participant ":ParserUtil" as ParserUtil LOGIC_COLOR
+participant "labelPersonDescriptor: LabelPersonDescriptor" as LabelPersonDescriptor LOGIC_COLOR
+participant "c:AddLabelCommand" as AddLabelCommand LOGIC_COLOR
+participant "labelledPerson:Person" as Person LOGIC_COLOR
+participant ":CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant ":Model" as Model MODEL_COLOR
+end box
+
+[-> LogicManager : execute("label add Alex Yeoh t/friends")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("label add Alex Yeoh t/friends")
+activate AddressBookParser
+
+create AddLabelCommandParser
+AddressBookParser -> AddLabelCommandParser : AddLabelCommandParser()
+activate AddLabelCommandParser
+
+AddLabelCommandParser --> AddressBookParser
+deactivate AddLabelCommandParser
+
+AddressBookParser -> AddLabelCommandParser : parse("Alex Yeoh t/friends")
+activate AddLabelCommandParser
+
+AddLabelCommandParser -> ArgumentTokenizer : tokenize(args, PREFIX_TAG)
+activate ArgumentTokenizer
+
+create ArgumentMultimap
+ArgumentTokenizer -> ArgumentMultimap : ArgumentMultimap()
+activate ArgumentMultimap
+
+ArgumentMultimap --> ArgumentTokenizer : argMultimap
+deactivate ArgumentMultimap
+
+ArgumentTokenizer --> AddLabelCommandParser : argMultimap
+deactivate ArgumentTokenizer
+
+AddLabelCommandParser -> ParserUtil : parseName("Alex Yeoh")
+activate ParserUtil
+
+ParserUtil --> AddLabelCommandParser : name
+deactivate ParserUtil
+
+create LabelPersonDescriptor
+AddLabelCommandParser -> LabelPersonDescriptor : LabelPersonDescriptor()
+activate LabelPersonDescriptor
+
+LabelPersonDescriptor --> AddLabelCommandParser : labelPersonDescriptor
+deactivate LabelPersonDescriptor
+
+AddLabelCommandParser -> ArgumentMultimap : getAllValues(PREFIX_TAG)
+activate ArgumentMultimap
+
+ArgumentMultimap --> AddLabelCommandParser : tagList
+deactivate ArgumentMultimap
+
+alt parseTagsForEdit(tagList).isPresent()
+AddLabelCommandParser -> LabelPersonDescriptor : setTags(value)
+activate LabelPersonDescriptor
+
+LabelPersonDescriptor --> AddLabelCommandParser
+deactivate LabelPersonDescriptor
+end
+
+create AddLabelCommand
+AddLabelCommandParser -> AddLabelCommand : AddLabelCommand(name, labelPersonDescriptor);
+activate AddLabelCommand
+
+AddLabelCommand --> AddLabelCommandParser : c
+deactivate AddLabelCommand
+
+AddLabelCommandParser --> AddressBookParser : c
+destroy AddLabelCommandParser
+
+AddressBookParser --> LogicManager : c
+deactivate AddressBookParser
+
+LogicManager -> AddLabelCommand : execute()
+activate AddLabelCommand
+
+create Person
+AddLabelCommand -> Person : Person(p.getName(), p.getPhone(), p.getEmail(), updatedTags)
+activate Person
+
+Person --> AddLabelCommand : labelledPerson
+deactivate Person
+
+AddLabelCommand -> Model : setPerson(p, labelledPerson)
+activate Model
+
+Model --> AddLabelCommand
+deactivate Model
+
+AddLabelCommand -> Model : updatePersonInMeetingBook(p, labelledPerson)
+activate Model
+
+Model --> AddLabelCommand
+deactivate Model
+
+AddLabelCommand -> Model : updatePersonInModuleBook(p, labelledPerson)
+activate Model
+
+Model --> AddLabelCommand
+deactivate Model
+
+create CommandResult
+AddLabelCommand -> CommandResult
+activate CommandResult
+
+CommandResult --> AddLabelCommand
+deactivate CommandResult
+
+AddLabelCommand --> LogicManager : result
+destroy AddLabelCommand
+
+[<--LogicManager
+deactivate LogicManager
+@enduml

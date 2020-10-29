@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 import seedu.address.logic.commands.CopyCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.module.ModuleName;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.FullNameMatchesKeywordPredicate;
 import seedu.address.model.person.PersonHasTagsAndNamePredicate;
 import seedu.address.model.person.PersonHasTagsPredicate;
 import seedu.address.model.tag.Tag;
@@ -78,7 +78,7 @@ public class CopyCommandParser implements Parser<CopyCommand> {
             }
             Set<ModuleName> moduleNameSet = ParserUtil.parseAllModules(moduleNames);
             return new CopyCommand(
-                    new NameContainsKeywordsPredicate(new ArrayList<>(nameSet)),
+                    new FullNameMatchesKeywordPredicate(new ArrayList<>(nameSet)),
                     isEmail, new ArrayList<>(moduleNameSet));
         } else if (arePrefixesPresent(argMultimap, PREFIX_MODULE, PREFIX_TAG)) {
             Set<Tag> tagSet = parseTagsForFind(argMultimap.getAllValues(PREFIX_TAG)).orElse(new HashSet<>());
@@ -98,7 +98,7 @@ public class CopyCommandParser implements Parser<CopyCommand> {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, CopyCommand.MESSAGE_USAGE));
             }
             return new CopyCommand(
-                    new NameContainsKeywordsPredicate(new ArrayList<>(nameSet)),
+                    new FullNameMatchesKeywordPredicate(new ArrayList<>(nameSet)),
                     isEmail, new ArrayList<ModuleName>());
         } else if (arePrefixesPresent(argMultimap, PREFIX_TAG)) {
             Set<Tag> tagSet = parseTagsForFind(argMultimap.getAllValues(PREFIX_TAG))

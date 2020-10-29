@@ -1,0 +1,47 @@
+@startuml
+!include style.puml
+
+Actor User
+participant ":AutocompleteCommandBox" as AutocompleteCommandBox LOGIC_COLOR
+participant ":Suggestion" as Suggestion LOGIC_COLOR
+
+User -> AutocompleteCommandBox : types "cname/" into commandBox's TextField
+
+alt !isAutocompleteMode
+    AutocompleteCommandBox -> AutocompleteCommandBox : toggleAutocompleteModeOn()
+    activate AutocompleteCommandBox
+    deactivate AutocompleteCommandBox
+end
+
+loop isAutocompleteMode
+    User -> AutocompleteCommandBox : Presses any key
+    activate AutocompleteCommandBox
+    alt keyPressed == TAB
+
+        alt !hasSetPrefix
+            AutocompleteCommandBox -> Suggestion : setPrefix(prefix)
+            note right: prefix refers to whatever the user had typed after the \ncommand prefix ("cname/") to the point the user presses TAB
+            ||||
+        end
+
+        alt isShiftDown()
+            AutocompleteCommandBox -> Suggestion : prevSuggestion()
+            activate Suggestion
+            Suggestion --> AutocompleteCommandBox
+            deactivate Suggestion
+            ||||
+        else else
+            AutocompleteCommandBox -> Suggestion : nextSuggestion()
+            activate Suggestion
+            Suggestion --> AutocompleteCommandBox
+            deactivate Suggestion
+            ||||
+        end
+    else
+
+    end
+    AutocompleteCommandBox-[hidden]->User
+    deactivate AutocompleteCommandBox
+end
+
+@enduml

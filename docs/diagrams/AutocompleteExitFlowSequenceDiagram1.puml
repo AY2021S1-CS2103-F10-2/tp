@@ -1,0 +1,27 @@
+@startuml
+!include style.puml
+
+Actor User
+participant ":AutocompleteCommandBox" as AutocompleteCommandBox LOGIC_COLOR
+
+User -> AutocompleteCommandBox : Press "Enter"
+activate AutocompleteCommandBox
+
+alt isAutocompleteMode
+    AutocompleteCommandBox -> AutocompleteCommandBox : unsetPrefix()
+    activate AutocompleteCommandBox
+    deactivate AutocompleteCommandBox
+
+    AutocompleteCommandBox -> AutocompleteCommandBox : toggleAutocompleteModeOff()
+    activate AutocompleteCommandBox
+    deactivate AutocompleteCommandBox
+
+    AutocompleteCommandBox -> AutocompleteCommandBox : removeCommandPrefix()
+    activate AutocompleteCommandBox
+    deactivate AutocompleteCommandBox
+end
+deactivate AutocompleteCommandBox
+||||
+
+
+@enduml

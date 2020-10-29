@@ -1,0 +1,30 @@
+@startuml
+start
+:User inputs find command;
+:FindCommandParser checks input;
+if() then ([input has name and tag prefix])
+:Create predicate that checks if
+Person has any of the given names or
+tags;
+:Create FindCommand with created
+predicate;
+elseif() then ([input only has name prefix])
+:Create predicate that checks if
+Person has any of the given names;
+:Create FindCommand with created
+predicate;
+elseif() then ([input only has tag prefix])
+:Create predicate that checks if
+Person has any of the given tags;
+:Create FindCommand with created
+predicate;
+else ([else])
+:Throw ParseException;
+end
+endif
+:Execute the created FindCommand;
+:Obtain list of Persons from Modduke
+who pass the predicate;
+:Display list of Persons;
+stop
+@enduml

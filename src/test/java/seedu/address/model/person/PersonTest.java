@@ -22,6 +22,23 @@ public class PersonTest {
         assertThrows(UnsupportedOperationException.class, () -> person.getTags().remove(0));
     }
 
+    //------------- Tests for parseTags -------------//
+    @Test
+    public void parseTags() {
+        // EP: prof tag -> returns PROFESSOR PersonType
+        assertTrue(new PersonBuilder().withName("Test").withEmail("Test@gmail.com").withPhone("9001100")
+                .withTags("prof").build().getPersonType() == Person.PersonType.PROFESSOR);
+        // EP: ta tag -> returns TA PersonType
+        assertTrue(new PersonBuilder().withName("Test").withEmail("Test@gmail.com").withPhone("9001100")
+                .withTags("ta").build().getPersonType() == Person.PersonType.TA);
+        // EP: all other tags -> returns CONTACT PersonType
+        assertTrue(new PersonBuilder().withName("Test").withEmail("Test@gmail.com").withPhone("9001100")
+                .withTags("blah").build().getPersonType() == Person.PersonType.CONTACT);
+        // EP: no tags -> returns CONTACT PersonType
+        assertTrue(new PersonBuilder().withName("Test").withEmail("Test@gmail.com").withPhone("9001100")
+                .build().getPersonType() == Person.PersonType.CONTACT);
+    }
+
     @Test
     public void isSamePerson() {
         // same object -> returns true

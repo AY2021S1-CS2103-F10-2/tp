@@ -30,10 +30,6 @@ public class Date {
         this.date = LocalDate.parse(date, INPUT_FORMAT);
     }
 
-    public LocalDate getLocalDateFormat() {
-        return this.date;
-    }
-
     /**
      * Returns true if a given string is a valid date.
      */

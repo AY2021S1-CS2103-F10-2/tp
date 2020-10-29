@@ -71,7 +71,7 @@ public class DeleteMeetingCommand extends Command {
 
         model.deleteMeeting(meetingToDelete);
         return new CommandResult(String.format(MESSAGE_DELETE_MEETING_SUCCESS, meetingToDelete), false,
-                false, true, false);
+                false, true);
     }
 
     @Override

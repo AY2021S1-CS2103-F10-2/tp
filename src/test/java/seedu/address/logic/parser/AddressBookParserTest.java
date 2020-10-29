@@ -27,7 +27,7 @@ import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.FullNameMatchesKeywordPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.model.tag.Tag;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
@@ -59,7 +59,7 @@ public class AddressBookParserTest {
                 DeleteCommand.COMMAND_WORD + " n/" + TypicalPersons.ALICE.getName().toString());
         ArrayList<String> nameOne = new ArrayList<>();
         nameOne.add(TypicalPersons.ALICE.getName().toString());
-        assertEquals(new DeleteCommand(new NameContainsKeywordsPredicate(nameOne), new ArrayList<>()), command);
+        assertEquals(new DeleteCommand(new FullNameMatchesKeywordPredicate(nameOne), new ArrayList<>()), command);
     }
 
     @Test

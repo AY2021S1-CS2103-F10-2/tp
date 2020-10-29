@@ -77,13 +77,13 @@ Example:
 
 Delete contacts with the given criteria from Modduke.
 
-Format: `contact delete [n/CONTACT_NAME] [m/MODULE_NAME] [t/TAG_NAME]`
+Format: `contact delete [n/CONTACT_FULL_NAME] [m/MODULE_NAME] [t/TAG_NAME]`
 
-* [n/CONTACT_NAME], [m/MODULE_NAME] and [t/TAG_NAME] are all optional fields,
+* [n/CONTACT_FULL_NAME], [m/MODULE_NAME] and [t/TAG_NAME] are all optional fields,
 * At least one of the optional fields must be provided.
 
 Examples:
-* `contact delete n/Roy n/Jake` delete contacts `Roy` and `Jake` from Modduke.
+* `contact delete n/Roy Chan n/Jake Ng` delete contacts `Roy Chan` and `Jake Ng` from Modduke.
 * `contact delete m/CS2103 t/classmates` deletes all contacts in `CS2103` module or have `classmates` tag
 
 ### Editing a contact : `contact edit`
@@ -111,6 +111,16 @@ Note: Once cleared, contacts are permanently deleted.
 Shows a list of all persons in the address book.
 
 Format: `contact list`
+
+### Finding contacts: `contact find`
+
+Shows a list of all persons in the address book that have the given keywords in their name and/or the given tags.
+
+Format: `contact find [n/KEYWORD] [t/TAG_NAME]`
+
+Examples:
+*   `contact find n/Tan` Shows all persons with `Tan` in their name.
+*   `contact find n/Jay t/classmates` Shows all persons with `Jay` in their name and persons with the `classmates` tag.
 
 ### Creating a module : `module add`
 
@@ -170,7 +180,7 @@ Format: `meeting add m/MODULE n/MEETING_NAME d/MEETING_DATE t/MEETING_TIME p/PAR
 * Participants added need to be contacts that are exist in the given module
 
 Examples:
-*  `meeting add m/CS2103 n/weekly meeting d/2020-09-20 t/10:00 m/Jay, Roy, Jerryl, Yeeloon, 
+*  `meeting add m/CS2103 n/weekly meeting d/2020-09-20 t/10:00 m/Jay, Roy, Jerryl, Yeeloon,
 Ekam a/Discuss sequence diagram n/Revise page 2 of textbook beforehand`
 
 ### Deleting a meeting : `meeting delete`
@@ -258,27 +268,28 @@ Format: `consult list`
 
 Copies email address of contacts with the given criteria to your clipboard.
 
-Format: `copy email [n/CONTACT_NAME] [m/MODULE_NAME] [t/TAG_NAME]`
+Format: `copy email [n/CONTACT_FULL_NAME] [m/MODULE_NAME] [t/TAG_NAME]`
 
-* [n/CONTACT_NAME], [m/MODULE_NAME] and [t/TAG_NAME] are all optional fields,
+* [n/CONTACT_FULL_NAME], [m/MODULE_NAME] and [t/TAG_NAME] are all optional fields,
 * At least one of the optional fields must be provided.
 
 Examples:
-* `copy email n/Roy n/Ekam`
-* `copy email m/CS2103 t/classmate n/Tom n/Jerryl`
+* `copy email n/Bob Ross`
+* `copy email m/CS2103 t/classmate n/Tom Tan n/Jerryl Chong`
 
 ### Copy phone numbers of contacts : `copy phone`
 
 Copies phone numbers of contacts with the given criteria to your clipboard.
 
-Format: `copy phone [n/CONTACT_NAME] [m/MODULE_NAME] [t/TAG_NAME]`
+Format: `copy phone [n/CONTACT_FULL_NAME] [m/MODULE_NAME] [t/TAG_NAME]`
 
-* [n/CONTACT_NAME], [m/MODULE_NAME] and [t/TAG_NAME] are all optional fields,
+* [n/CONTACT_FULL_NAME], [m/MODULE_NAME] and [t/TAG_NAME] are all optional fields,
 * At least one of the optional fields must be provided.
 
 Examples:
 * `copy phone m/CS2103`
 * `copy phone m/CS1010 t/classmate n/Bob n/Roy`
+* `copy phone m/CS1010 t/classmate n/Bob Ross n/Peter Parker`
 
 ### Viewing the timeline : `timeline`
 
@@ -301,7 +312,7 @@ AddressBook data are saved in the hard disk automatically after any command that
 
 ### Autocompletion
 
-Currently Modduke will support autocompletion for the following fields in v1.3.(and their associated trigger phrases)
+Currently Modduke will support autocompletion for the following fields in v1.3.
 
 * Contact Name -  Triggered using `cname/`
 * Module Name -  Triggered using `mdname/`
@@ -309,6 +320,8 @@ Currently Modduke will support autocompletion for the following fields in v1.3.(
 
 Typing in these trigger phrases will turn the text yellow to show that CommandBox has entered Autocompletion Mode.
 Use `Tab` to scroll forward and `Shift-Tab` to iterate backwards through suggestions.
+![Autocomplete Example](images/AutocompleteExample.gif)
+
 
 * Note that while in Autocomplete mode you cannot edit suggestions unless you iterated back to your own input or you press `Backspace`.
 * Pressing `Enter` will lock in your current selection and take you out of Autocomplete mode.

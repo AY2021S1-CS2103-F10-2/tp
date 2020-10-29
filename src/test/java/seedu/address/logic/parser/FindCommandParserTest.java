@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
-import seedu.address.model.person.PersonHasTagsAndNamePredicate;
+import seedu.address.model.person.PersonHasTagsAndKeywordInNamePredicate;
 import seedu.address.model.person.PersonHasTagsPredicate;
 import seedu.address.model.tag.Tag;
 
@@ -50,7 +50,7 @@ public class FindCommandParserTest {
         ArrayList<Tag> tagList = new ArrayList<>();
         tagList.add(new Tag("tag"));
         FindCommand expectedFindCommand =
-                new FindCommand(new PersonHasTagsAndNamePredicate(nameList, tagList));
+                new FindCommand(new PersonHasTagsAndKeywordInNamePredicate(nameList, tagList));
         assertParseSuccess(parser, " n/Alice t/tag", expectedFindCommand);
 
         // multiple whitespaces between keywords
@@ -70,7 +70,7 @@ public class FindCommandParserTest {
         tagSet.add(new Tag("person"));
         ArrayList<Tag> tagList = new ArrayList<>(tagSet);
         FindCommand expectedFindCommand =
-                new FindCommand(new PersonHasTagsAndNamePredicate(nameList, tagList));
+                new FindCommand(new PersonHasTagsAndKeywordInNamePredicate(nameList, tagList));
         assertParseSuccess(parser, " n/Alice n/Bob n/Candy t/tag t/person", expectedFindCommand);
     }
 

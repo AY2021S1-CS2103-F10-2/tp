@@ -22,12 +22,12 @@ public class DeleteCommand extends Command {
     public static final String COMMAND_WORD = "contact delete";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Deletes the person identified by the name used in the displayed person list.\n"
+            + ": Deletes the persons who have the specified names (case-insensitive), modules or tags.\n"
             + "Parameters: "
-            + "[" + PREFIX_NAME + "NAME] "
+            + "[" + PREFIX_NAME + "FULL_NAME] "
             + "[" + PREFIX_MODULE + "MODULE] "
             + "[" + PREFIX_TAG + "TAG]\n"
-            + "Example: " + COMMAND_WORD + " n/Roy t/friend";
+            + "Example: " + COMMAND_WORD + " n/Roy Chan t/friend";
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted People: %1$s";
 
@@ -53,6 +53,10 @@ public class DeleteCommand extends Command {
             // finds Persons that match the predicate and Persons that have the given Modules
             people = new ArrayList<>(model.getUpdatedFilteredPersonList(predicate, moduleNames));
         }
+        if (people.isEmpty()) {
+            throw new CommandException("No contact has the given arguments.");
+        }
+
         List<Person> peopleCopy = new ArrayList<>(people);
 
         // Update address book
@@ -68,7 +72,8 @@ public class DeleteCommand extends Command {
                 .reduce("", (x, y) -> x + y + ", ");
         deletedNames = deletedNames.substring(0, deletedNames.length() - 2);
 
-        return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, deletedNames));
+        return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, deletedNames), false, false,
+                true);
     }
 
     @Override

@@ -5,8 +5,10 @@ box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
 participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
 participant ":DeleteCommandParser" as DeleteCommandParser LOGIC_COLOR
+participant ":ArgumentTokenizer" as ArgumentTokenizer LOGIC_COLOR
+participant "argMultimap:ArgumentMultimap" as ArgumentMultimap LOGIC_COLOR
 participant ":ParserUtil" as ParserUtil LOGIC_COLOR
-participant ":Name" as Name LOGIC_COLOR
+participant ":NameContainsKeywordsPredicate" as NameContainsKeywordsPredicate LOGIC_COLOR
 participant "d:DeleteCommand" as DeleteCommand LOGIC_COLOR
 participant ":CommandResult" as CommandResult LOGIC_COLOR
 end box
@@ -15,10 +17,10 @@ box Model MODEL_COLOR_T1
 participant ":Model" as Model MODEL_COLOR
 end box
 
-[-> LogicManager : execute("contact delete Alex Yeoh")
+[-> LogicManager : execute("contact delete n/Alex Yeoh")
 activate LogicManager
 
-LogicManager -> AddressBookParser : parseCommand("contact delete Alex Yeoh")
+LogicManager -> AddressBookParser : parseCommand("contact delete n/Alex Yeoh")
 activate AddressBookParser
 
 create DeleteCommandParser
@@ -28,33 +30,49 @@ activate DeleteCommandParser
 DeleteCommandParser --> AddressBookParser
 deactivate DeleteCommandParser
 
-AddressBookParser -> DeleteCommandParser : parse("Alex Yeoh")
+AddressBookParser -> DeleteCommandParser : parse(" n/Alex Yeoh")
 activate DeleteCommandParser
 
-DeleteCommandParser -> ParserUtil : parseName("Alex Yeoh")
+DeleteCommandParser -> ArgumentTokenizer : tokenize(args, PREFIX_TAG)
+activate ArgumentTokenizer
+
+create ArgumentMultimap
+ArgumentTokenizer -> ArgumentMultimap : ArgumentMultimap()
+activate ArgumentMultimap
+
+ArgumentMultimap --> ArgumentTokenizer : argMultimap
+deactivate ArgumentMultimap
+
+ArgumentTokenizer --> DeleteCommandParser : argMultimap
+deactivate ArgumentTokenizer
+
+DeleteCommandParser -> ArgumentMultimap : getAllValues(PREFIX_NAME)
+activate ArgumentMultimap
+
+ArgumentMultimap -> DeleteCommandParser : names
+deactivate ArgumentMultimap
+
+DeleteCommandParser -> ParserUtil : parseAllNames(names)
 activate ParserUtil
 
-create Name
-ParserUtil -> Name : Name("Alex Yeoh")
-activate Name
-
-Name --> ParserUtil : n
-deactivate Name
-
-ParserUtil --> DeleteCommandParser : n
+ParserUtil --> DeleteCommandParser : nameSet
 deactivate ParserUtil
 
+create NameContainsKeywordsPredicate
+DeleteCommandParser -> NameContainsKeywordsPredicate
+activate NameContainsKeywordsPredicate
+
+NameContainsKeywordsPredicate --> DeleteCommandParser : predicate
+deactivate NameContainsKeywordsPredicate
+
 create DeleteCommand
-DeleteCommandParser -> DeleteCommand : DeleteCommand(n)
+DeleteCommandParser -> DeleteCommand
 activate DeleteCommand
 
 DeleteCommand --> DeleteCommandParser : d
 deactivate DeleteCommand
 
 DeleteCommandParser --> AddressBookParser : d
-deactivate DeleteCommandParser
-'Hidden arrow to position the destroy marker below the end of the activation bar.
-DeleteCommandParser -[hidden]-> AddressBookParser
 destroy DeleteCommandParser
 
 AddressBookParser --> LogicManager : d
@@ -63,6 +81,13 @@ deactivate AddressBookParser
 LogicManager -> DeleteCommand : execute()
 activate DeleteCommand
 
+DeleteCommand -> Model : getUpdatedFilteredPersonList(predicate)
+activate Model
+
+Model --> DeleteCommand : people
+deactivate Model
+
+loop for p in people
 DeleteCommand -> Model : deletePerson(p)
 activate Model
 
@@ -80,6 +105,7 @@ activate Model
 
 Model --> DeleteCommand
 deactivate Model
+end
 
 create CommandResult
 DeleteCommand -> CommandResult
@@ -89,7 +115,7 @@ CommandResult --> DeleteCommand
 deactivate CommandResult
 
 DeleteCommand --> LogicManager : result
-deactivate DeleteCommand
+destroy DeleteCommand
 
 [<--LogicManager
 deactivate LogicManager

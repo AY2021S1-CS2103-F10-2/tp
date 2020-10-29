@@ -1,0 +1,93 @@
+@startuml
+!include style.puml
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":ClearLabelCommandParser" as ClearLabelCommandParser LOGIC_COLOR
+participant ":ParserUtil" as ParserUtil LOGIC_COLOR
+participant "c:ClearLabelCommand" as ClearLabelCommand LOGIC_COLOR
+participant "clearedPerson:Person" as Person LOGIC_COLOR
+participant ":CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant ":Model" as Model MODEL_COLOR
+end box
+
+[-> LogicManager : execute("label clear Alex Yeoh")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("label clear Alex Yeoh")
+activate AddressBookParser
+
+create ClearLabelCommandParser
+AddressBookParser -> ClearLabelCommandParser : ClearLabelCommandParser()
+activate ClearLabelCommandParser
+
+ClearLabelCommandParser --> AddressBookParser
+deactivate ClearLabelCommandParser
+
+AddressBookParser -> ClearLabelCommandParser : parse("Alex Yeoh")
+activate ClearLabelCommandParser
+
+ClearLabelCommandParser -> ParserUtil : parseName("Alex Yeoh")
+activate ParserUtil
+
+ParserUtil --> ClearLabelCommandParser : name
+deactivate ParserUtil
+
+create ClearLabelCommand
+ClearLabelCommandParser -> ClearLabelCommand : ClearLabelCommand(name);
+activate ClearLabelCommand
+
+ClearLabelCommand --> ClearLabelCommandParser : c
+deactivate ClearLabelCommand
+
+ClearLabelCommandParser --> AddressBookParser : c
+destroy ClearLabelCommandParser
+
+AddressBookParser --> LogicManager : c
+deactivate AddressBookParser
+
+LogicManager -> ClearLabelCommand : execute()
+activate ClearLabelCommand
+
+create Person
+ClearLabelCommand -> Person : Person(p.getName(), p.getPhone(), p.getEmail(), new HashSet<>())
+activate Person
+
+Person --> ClearLabelCommand : clearedPerson
+deactivate Person
+
+ClearLabelCommand -> Model : setPerson(p, clearedPerson)
+activate Model
+
+Model --> ClearLabelCommand
+deactivate Model
+
+ClearLabelCommand -> Model : updatePersonInMeetingBook(p, clearedPerson)
+activate Model
+
+Model --> ClearLabelCommand
+deactivate Model
+
+ClearLabelCommand -> Model : updatePersonInModuleBook(p, clearedPerson)
+activate Model
+
+Model --> ClearLabelCommand
+deactivate Model
+
+create CommandResult
+ClearLabelCommand -> CommandResult
+activate CommandResult
+
+CommandResult --> ClearLabelCommand
+deactivate CommandResult
+
+ClearLabelCommand --> LogicManager : result
+destroy ClearLabelCommand
+
+[<--LogicManager
+deactivate LogicManager
+@enduml

@@ -2,7 +2,6 @@ package seedu.address.model.person;
 
 import java.util.List;
 
-import seedu.address.commons.util.StringUtil;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -27,7 +26,7 @@ public class PersonHasTagsAndNamePredicate implements PersonPredicate {
     @Override
     public boolean test(Person person) {
         return names.stream()
-                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getName().fullName, keyword))
+                .anyMatch(keyword -> person.getName().fullName.toLowerCase().equals(keyword.toLowerCase()))
                 ||
                 tags.stream()
                 .anyMatch(tag -> person.getTags().contains(tag));
