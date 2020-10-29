@@ -288,7 +288,6 @@ Format: `copy phone [n/CONTACT_FULL_NAME] [m/MODULE_NAME] [t/TAG_NAME]`
 
 Examples:
 * `copy phone m/CS2103`
-* `copy phone m/CS1010 t/classmate n/Bob n/Roy`
 * `copy phone m/CS1010 t/classmate n/Bob Ross n/Peter Parker`
 
 ### Viewing the timeline : `timeline`
