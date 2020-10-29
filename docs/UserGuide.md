@@ -284,7 +284,7 @@ Examples:
 
 Displays the timeline view of the application in a new window.
 
-* Meetings displayed in chronological order, with the earliest meeting on the left of the window
+* Meetings displayed in chronological order, with the earliest meeting on the left side of the window
 * Meetings that have passed the current date and time marked as red
 
 Format: `timeline`
